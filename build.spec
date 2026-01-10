@@ -19,13 +19,20 @@ ctk_datas = collect_data_files('customtkinter')
 
 a = Analysis(
     ['src/main.py'],
-    pathex=[],
+    pathex=['src'],
     binaries=[],
     datas=yt_dlp_datas + ctk_datas,
     hiddenimports=yt_dlp_hiddenimports + [
         'customtkinter',
         'PIL',
         'PIL._tkinter_finder',
+        # Local modules
+        'ui',
+        'ui.main_window',
+        'downloader',
+        'history',
+        'settings',
+        'validator',
     ],
     hookspath=[],
     hooksconfig={},
