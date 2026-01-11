@@ -1,6 +1,6 @@
 """
-YouTube Downloader - Main Entry Point
-A simple tool to download YouTube videos.
+Tools Hub - Main Entry Point
+A collection of useful tools including YouTube Downloader and CapCut Caption Extractor.
 """
 
 import sys
@@ -12,12 +12,12 @@ if src_dir not in sys.path:
     sys.path.insert(0, src_dir)
 
 # Now import with absolute imports
-from ui.main_window import MainWindow
+from ui.tool_launcher import ToolLauncher
 
 
 def main():
     """Main application entry point."""
-    app = MainWindow()
+    app = ToolLauncher()
     app.mainloop()
 
 

@@ -234,11 +234,13 @@ class AnimatedDownloadCard(ctk.CTkFrame):
             self.on_open_folder_click(self.item.file_path)
 
 
-class MainWindow(ctk.CTk):
-    """Main application window for YouTube Downloader."""
+class YouTubeDownloaderWindow(ctk.CTkToplevel):
+    """YouTube Downloader tool window."""
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self, master=None, on_back=None):
+        super().__init__(master)
+        
+        self.on_back = on_back
         
         # Settings
         self.settings = get_settings()
@@ -251,9 +253,8 @@ class MainWindow(ctk.CTk):
         self.geometry("600x700")
         self.minsize(550, 650)
         
-        # Set theme
-        ctk.set_appearance_mode("dark")
-        ctk.set_default_color_theme("blue")
+        # Handle window close
+        self.protocol("WM_DELETE_WINDOW", self._on_close)
         
         # Initialize downloader
         self.downloader = YouTubeDownloader(self.settings.download_folder)
@@ -270,6 +271,12 @@ class MainWindow(ctk.CTk):
         
         # Center window
         self._center_window()
+    
+    def _on_close(self):
+        """Handle window close."""
+        if self.on_back:
+            self.on_back()
+        self.destroy()
     
     def _center_window(self):
         """Center the window on screen."""
@@ -289,6 +296,21 @@ class MainWindow(ctk.CTk):
         # === Header ===
         self.header_frame = ctk.CTkFrame(self.main_frame, fg_color="transparent")
         self.header_frame.pack(fill="x", pady=(0, 15))
+        
+        # Back button (only if launched from launcher)
+        if self.on_back:
+            self.back_btn = ctk.CTkButton(
+                self.header_frame,
+                text="← Quay lại",
+                font=ctk.CTkFont(size=11),
+                width=90,
+                height=28,
+                corner_radius=6,
+                command=self._on_close,
+                fg_color="#7f8c8d",
+                hover_color="#636e72"
+            )
+            self.back_btn.pack(side="left", padx=(0, 10))
         
         self.title_label = ctk.CTkLabel(
             self.header_frame,
